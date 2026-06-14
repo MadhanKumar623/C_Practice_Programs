@@ -13,6 +13,7 @@ static uint8_t HEAP_MEMORY[BLOCKS][BLOCK_SIZE];           //Original Heap Memory
 static uint8_t TRACK_ARRAY[BLOCKS] = {0};                 //Not storing any data, just an 0/1 array to store the Heap Memory used/unused Blocks
 
 
+// Reverses all 32 bits in the input value using two masks.
 uint32_t reverse_bits(uint32_t num)
 {
     uint32_t ret_val = 0;
@@ -36,6 +37,7 @@ uint32_t reverse_bits(uint32_t num)
     return ret_val;
 }
 
+// Reverses all 32 bits by shifting out one bit at a time from LSB to MSB.
 uint32_t reverse_bits_alternate(uint32_t num)     //Extracting the LSB bits one by one and pushing it to left side as MSB
 {
    uint32_t ret_val = 0;
@@ -48,6 +50,7 @@ uint32_t reverse_bits_alternate(uint32_t num)     //Extracting the LSB bits one 
    return ret_val;
 }
 
+// Converts a hexadecimal string into its numeric 32-bit value.
 uint32_t hex_string_to_num(char *str)
 {
     uint32_t ret_val = 0;
@@ -73,11 +76,13 @@ uint32_t hex_string_to_num(char *str)
     return ret_val;
 }
 
+// Aligns an address upward to the requested alignment boundary.
 uint32_t allign_up(uint32_t addr, uint8_t allignment)
 {
     return (addr + (allignment - 1)) & (~(allignment-1));
 }
 
+// Checks whether the given memory value is stored in little-endian order.
 uint8_t is_little_endian(void *ptr, uint8_t lsb)
 {
     uint8_t *ptr1 = (uint8_t*)ptr;
@@ -85,6 +90,7 @@ uint8_t is_little_endian(void *ptr, uint8_t lsb)
     else return 0;
 }
 
+// Copies bytes between buffers and handles overlapping regions safely.
 void memcopy_custom(uint8_t *src, uint8_t *dst, uint8_t size_to_copy)
 {
     if(src < dst)     //Copy backward if the Destination address is larger than source address
@@ -99,6 +105,7 @@ void memcopy_custom(uint8_t *src, uint8_t *dst, uint8_t size_to_copy)
     }
 }
 
+// Allocates one fixed-size block from the custom static heap.
 void *my_malloc(void)
 {
     for(int i=0;i<BLOCKS; i++)
@@ -111,6 +118,7 @@ void *my_malloc(void)
     }
 }
 
+// Frees a previously allocated block from the custom static heap.
 void free_ptr(void *ptr)
 {
     for(int i=0;i<BLOCKS;i++)
@@ -123,6 +131,7 @@ void free_ptr(void *ptr)
     }
 }
 
+// Rotates an integer array to the left by k positions.
 void array_rotate_left(int arr[], int n, int k)
 {
    k = k % n;
@@ -135,6 +144,7 @@ void array_rotate_left(int arr[], int n, int k)
    }
 }
 
+// Rotates an integer array to the right by k positions.
 void array_rotate_right(int arr[], int n, int k)
 {
    k = k % n;
@@ -147,6 +157,7 @@ void array_rotate_right(int arr[], int n, int k)
    }
 }
 
+// Reverses the contents of an integer array in place.
 void array_reverse(int arr[], int len)     //Did without the second array creation
 {
     int start = 0, end = len-1;
@@ -159,6 +170,7 @@ void array_reverse(int arr[], int len)     //Did without the second array creati
     }
 }
 
+// Rotates the bits of a 32-bit value to the right.
 uint32_t bit_rotate_right(uint32_t num, int r)
 {
     uint32_t ret_val = num;
@@ -178,6 +190,7 @@ uint32_t bit_rotate_right(uint32_t num, int r)
     //return (num >> r) | (num << (bits - r));
 }
 
+// Rotates the bits of a 32-bit value to the left.
 uint32_t bit_rotate_left(uint32_t num, int r)
 {
     uint32_t ret_val = num;
@@ -197,6 +210,7 @@ uint32_t bit_rotate_left(uint32_t num, int r)
     //return (num << r) | (num >> (bits - r));
 }
 
+// Prints duplicate values in an array using a small seen map.
 void print_duplicates(int *arr, int n)
 {
     int seen[100] = {0};         //Usage of Hash Map
@@ -209,6 +223,7 @@ void print_duplicates(int *arr, int n)
     }
 }
 
+// Finds the start and end indices of the maximum-sum subarray.
 void getMaxSumSubArrayIndices(int arr[], int size, int *startIndex, int *endIndex)
 {
     int currSum = arr[0];
@@ -239,17 +254,20 @@ void getMaxSumSubArrayIndices(int arr[], int size, int *startIndex, int *endInde
     }
 }
 
+// Swaps the byte order of a 32-bit integer.
 uint32_t endianess_conversion_32Bit(uint32_t val)
 {
      //0x12345678 --> 0001 0010 0011 0100 0101 0110 0111 1000 ---> 87563412 ---> 0111 1000 0101 0110 0011 0100 0001 0010
     return ((val >> 24)&0x000000FF) | ((val >> 8)&0x0000FF00) | ((val << 8)&0x00FF0000) | ((val << 24)&0xFF000000);
 }
 
+// Swaps odd and even bit positions in a 32-bit value.
 uint32_t swap_odd_even_bits_32Bit(uint32_t data)
 {
     return (((0xAAAAAAAA & data) >> 1) | ((0x55555555 & data) << 1));
 }
 
+// Sorts an array containing only 0s and 1s by moving all 0s to the front.
 void sortArray_1s0s(uint8_t *arr, uint8_t len)
 {
     int left = 0;
@@ -265,6 +283,7 @@ void sortArray_1s0s(uint8_t *arr, uint8_t len)
     }
 }
 
+// Removes all occurrences of a character from a string in place.
 void deleteCharFromString(char *str, char character, uint8_t len)
 {
     /*uint8_t index;
@@ -294,6 +313,7 @@ void deleteCharFromString(char *str, char character, uint8_t len)
     str[write_idx] = '\0';
 }
 
+// Removes all occurrences of a number from an array and updates its size.
 void deleteNumFromArray(uint16_t arr[], uint16_t num, uint8_t *size)
 {
     uint8_t write_idx = 0;
@@ -311,6 +331,7 @@ void deleteNumFromArray(uint16_t arr[], uint16_t num, uint8_t *size)
     }
 }
 
+// Removes duplicate characters from a string while keeping the first occurrence.
 void remove_duplicates(char *str) {
 	int index = 0;
     int final_index = 0;
@@ -328,6 +349,85 @@ void remove_duplicates(char *str) {
     str[final_index]='\0';
 }
 
+//Custom atoi() function implementation
+int custom_atoi(char *str)
+{
+    int ret_val = 0;
+    int sign = 1;
+    if(str[0] == '-' || str[0] == '+')
+    {
+        if(str[0] == '-') sign = -1;
+        str++;
+    }
+    while((*str >= '0') && (*str <= '9'))
+    {
+        ret_val = (ret_val * 10) + (*str - '0');
+        str++;
+    }
+    return ret_val*sign;
+}
+
+//Custom string Classifier
+void classify_string(const char *str)
+{
+    char has_num = 0, has_alpha = 0, has_others = 0;
+    while(*str != '\0')
+    {
+        if(((*str >= 'a') && (*str <= 'z')) || ((*str >= 'A') && (*str <= 'Z')))
+        {
+            has_alpha = 1;
+        }
+        else if((*str >= '0') && (*str <= '9'))
+        {
+            has_num = 1;
+        }
+        else   //Any other characters apart from num and alpha
+        {
+            has_others = 1;
+        }
+        str++;
+    }
+    if(has_num && !has_alpha && !has_others) printf("NUMERIC");
+    else if(!has_num && has_alpha && !has_others) printf("ALPHABETIC");
+    else if((has_num && has_alpha) || has_others) printf("MIXED");
+}
+
+//Custom string to Float conversion function
+float custom_atof(const char *str) {
+    float ret_val;
+    char signFlag = 1;
+    char dotFlag = 0;
+    long decCount = 1;
+
+    if(str[0] == '+')
+    {
+        signFlag = 1;
+        str++;
+    }
+    else if(str[0] == '-')
+    {
+        signFlag = -1;
+        str++;
+    }
+
+    while(*str != '\0')
+    {
+        if(*str == '.')
+        {
+            dotFlag = 1;
+            str++;
+            continue;
+        }
+        ret_val = (ret_val*10) + (*str - '0');
+        if(dotFlag == 1) decCount = decCount * 10;
+        str++;
+    }
+    ret_val = ret_val * (float)(1.00/decCount);
+
+    return ret_val*signFlag;
+}
+
+// Demonstrates one of the utility functions with a sample string.
 int main()
 {
     char str[20] = "Hello Madhan";
