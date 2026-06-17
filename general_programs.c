@@ -427,6 +427,80 @@ float custom_atof(const char *str) {
     return ret_val*signFlag;
 }
 
+// Search the key element in an array and send it's position in the array
+int binary_search(uint8_t *arr, uint8_t n, uint8_t key)
+{
+    uint8_t left = 0, right = n-1, mid;
+
+    while(left <= right)
+    {
+        mid = left + (right - left)/2;     //standard formula for computing the mid element in an array
+
+        if(arr[mid] == key)
+        {
+            return mid;
+        }
+        else if(arr[mid] > key)
+        {
+            right = mid - 1;
+        }
+        else if(arr[mid] < key)
+        {
+            left = mid + 1;
+        }
+    }
+    return -1;
+}
+
+
+// Bubble sort algorithm in Ascending order
+void bubble_sort(uint8_t *arr, uint8_t n) {
+    int global_counter = 0;
+    while(global_counter < n)
+    {
+        for(int j=0;j<n-global_counter-1;j++)
+        {
+            if(arr[j] > arr[j+1])            //Change this to arr[j] < arr[j+1] for Descending order Bubble sort
+            {
+                uint8_t temp = arr[j];
+                arr[j] = arr[j+1];
+                arr[j+1] = temp;
+            }
+        }
+        global_counter++;
+    }
+}
+
+
+//Function to find the first 3 maximum elements in an array without using of any Sorting logic
+void find_top_3(uint8_t *arr, uint8_t n) {
+    uint8_t largest1 = arr[0];
+    uint8_t largest2 = arr[0];
+    uint8_t largest3 = arr[0];
+
+    for(uint8_t i=1; i<n; i++)
+    {
+        if(arr[i] > largest3 && arr[i] > largest2 && arr[i] > largest1)
+        {
+            largest3 = largest2;
+            largest2 = largest1;
+            largest1 = arr[i];
+        }
+        else if(arr[i] > largest3 && arr[i] > largest2 && arr[i] < largest1)
+        {
+            largest3 = largest2;
+            largest2 = arr[i];
+        }
+        else if(arr[i] > largest3 && arr[i] <largest2 && arr[i] < largest1)
+        {
+            largest3 = arr[i];
+        }
+    }
+    if(n == 1) printf("%d\n",largest1);
+    else if(n == 2) printf("%d %d\n",largest1, largest2);
+    else printf("%d %d %d\n",largest1, largest2, largest3);
+}
+
 // Demonstrates one of the utility functions with a sample string.
 int main()
 {
