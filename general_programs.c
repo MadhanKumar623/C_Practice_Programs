@@ -223,6 +223,38 @@ void print_duplicates(int *arr, int n)
     }
 }
 
+//Kadane's Algorithm to find the SubArray which is having the maximum sum
+int maxSubarraySum(int arr[], int size, int *startIndexValue, int *endIndexValue)
+{
+    int res = arr[0];
+    int maxEnding = arr[0];
+    int start = 0, end = 0, tempStart = 0;
+
+    for (int i = 1; i < size; i++)
+    {
+        if (maxEnding + arr[i] > arr[i])
+        {
+            maxEnding = maxEnding + arr[i];
+        }
+        else
+        {
+            maxEnding = arr[i];
+            tempStart = i;
+        }
+
+        if (maxEnding > res)
+        {
+            res = maxEnding;
+            start = tempStart;
+            end = i;
+        }
+    }
+
+    *startIndexValue = start;
+    *endIndexValue = end;
+    return res;
+}
+
 // Finds the start and end indices of the maximum-sum subarray.
 void getMaxSumSubArrayIndices(int arr[], int size, int *startIndex, int *endIndex)
 {
@@ -286,22 +318,6 @@ void sortArray_1s0s(uint8_t *arr, uint8_t len)
 // Removes all occurrences of a character from a string in place.
 void deleteCharFromString(char *str, char character, uint8_t len)
 {
-    /*uint8_t index;
-    for(index=0;index<len;index++)
-    {
-        if(str[index] == character)
-        {
-            uint8_t locIndex = index;
-            for(uint8_t j = index+1; j<len ;j++)
-            {
-                str[locIndex++] = str[j];
-            }
-            len = locIndex;
-        }
-    }
-    str[index] = '\0';*/
-
-    //Another approach - Best Approach to avoid the O(n2) in the above method
     uint8_t write_idx = 0;
     for (uint8_t read_idx = 0; read_idx < len; read_idx++)
     {
@@ -332,7 +348,8 @@ void deleteNumFromArray(uint16_t arr[], uint16_t num, uint8_t *size)
 }
 
 // Removes duplicate characters from a string while keeping the first occurrence.
-void remove_duplicates(char *str) {
+void remove_string_duplicates_approach_1(char *str)
+{
 	int index = 0;
     int final_index = 0;
     int map[256] = {0};
@@ -347,6 +364,25 @@ void remove_duplicates(char *str) {
         index++;
     }
     str[final_index]='\0';
+}
+
+//Remove duplicates in a string and remove that
+void remove_string_duplicates_approach_2(char *str)
+{
+    int mask = 0;
+    int i, j = 0;
+
+    for(i = 0; str[i] != '\0'; i++)
+    {
+        int bit = str[i] - 'a';
+
+        if(!(mask & (1 << bit)))
+        {
+            mask |= (1 << bit);
+            str[j++] = str[i];
+        }
+    }
+    str[j] = '\0';
 }
 
 //Custom atoi() function implementation
@@ -501,10 +537,29 @@ void find_top_3(uint8_t *arr, uint8_t n) {
     else printf("%d %d %d\n",largest1, largest2, largest3);
 }
 
+
+//print the number is Binary (by checking whether is it 8 bit or 16 bit)
+void print_binary(uint16_t val) {
+    int16_t num = (val <= 255) ? 8 : 16;
+    for(int16_t i=num-1; i>=0; i--)
+    {
+        ((1<<i)&val) == 0 ? printf("0") : printf("1");
+    }
+}
+
+
 // Demonstrates one of the utility functions with a sample string.
 int main()
 {
-    char str[20] = "Hello Madhan";
-    remove_duplicates(str);
-    printf("%s",str);
+    int arr[] = {5,10,-3};
+    int start, end;
+    int size = sizeof(arr) / sizeof(arr[0]);
+    int sum = maxSubarraySum(arr, size, &start, &end);
+    printf("Sum is: %d\n",sum);
+    printf("Maxsum subArray = ");
+    for(int i=start; i<=end; i++)
+    {
+        printf("%d ",arr[i]);
+    }
+    printf("\n");
 }
